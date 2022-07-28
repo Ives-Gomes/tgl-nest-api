@@ -4,7 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -16,6 +18,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private dataSource: DataSource,
   ) {}
 
   async findAllUsers(): Promise<User[]> {
@@ -35,6 +38,13 @@ export class UserService {
   }
 
   async createUser(data: CreateUserInput): Promise<User> {
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(data.password, salt);
+
+    data.password = hash;
+
+    data.secure_id = uuidv4();
+
     const user = this.userRepository.create(data);
     const userSaved = await this.userRepository.save(user);
 
