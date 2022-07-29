@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 //importações para utilização do graphql
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
 import { UserModule } from './user/user.module';
+import { AddressModule } from './address/address.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -24,6 +28,7 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     UserModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [AppService],

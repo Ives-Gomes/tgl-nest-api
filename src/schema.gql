@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Address {
+  id: ID!
+  secure_id: String!
+  zip_code: String!
+  state: String!
+  city: String!
+  street: String!
+  district: String!
+  number: String!
+  complement: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: ID!
   secure_id: String!
@@ -11,22 +31,23 @@ type User {
   password: String!
   created_at: DateTime!
   updated_at: DateTime!
+  address: [Address!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Query {
   users: [User!]!
   user(id: String!): User!
+  addresses: [Address!]!
+  address(id: String!): Address!
 }
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
   updateUser(id: String!, data: UpdateUserInput!): User!
   deleteUser(id: String!): Boolean!
+  createAddress(data: CreateAddressInput!): Address!
+  updateAddress(id: String!, data: UpdateAddressInput!): Address!
+  deleteAddress(id: String!): Boolean!
 }
 
 input CreateUserInput {
@@ -43,4 +64,28 @@ input UpdateUserInput {
   email: String
   cpf: String!
   password: String!
+}
+
+input CreateAddressInput {
+  secure_id: String!
+  user_id: String!
+  zip_code: String!
+  state: String!
+  city: String!
+  street: String!
+  district: String!
+  number: String!
+  complement: String!
+}
+
+input UpdateAddressInput {
+  secure_id: String!
+  user_id: String!
+  zip_code: String!
+  state: String!
+  city: String!
+  street: String!
+  district: String!
+  number: String!
+  complement: String!
 }

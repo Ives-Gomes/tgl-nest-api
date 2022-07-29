@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Address } from 'src/address/address.entity';
 
 @ObjectType()
 @Entity()
@@ -8,7 +10,7 @@ export class User {
   @Field(() => ID)
   id: string;
 
-  @Column('uuid', { nullable: false })
+  @Column({ length: 36, nullable: false })
   secure_id: string;
 
   @Column({ length: 50, nullable: false })
@@ -20,7 +22,7 @@ export class User {
   @Column({ length: 50, nullable: false, unique: true })
   email: string;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ length: 250, nullable: false })
   password: string;
 
   @Column('timestamp', { nullable: false })
@@ -28,4 +30,7 @@ export class User {
 
   @Column('timestamp', { nullable: false })
   updated_at: Date;
+
+  @OneToMany(() => Address, (address) => address.user)
+  address: Address[];
 }
