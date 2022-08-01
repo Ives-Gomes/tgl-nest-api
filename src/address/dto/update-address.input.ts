@@ -8,10 +8,6 @@ export class UpdateAddressInput {
   secure_id: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'User id field is required' })
-  user_id: string;
-
-  @IsString()
   @IsOptional()
   @IsNotEmpty({ message: 'Zip code field is required' })
   zip_code: string;

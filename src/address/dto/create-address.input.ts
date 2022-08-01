@@ -8,10 +8,6 @@ export class CreateAddressInput {
   secure_id: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'User id field is required' })
-  user_id: string;
-
-  @IsString()
   @IsNotEmpty({ message: 'Zip code field is required' })
   zip_code: string;
 
